@@ -2,6 +2,7 @@
 
 <https://catalog.data.gov/dataset/death-rates-for-suicide-by-sex-race-hispanic-origin-and-age-united-states-020c1>
 
+## Group Members: Sheridan Harney, Hely Bhavsar, and Jasjeevan Kaur
 ## Introduction
 
 This is a project analyzing suicide death rates.
@@ -171,6 +172,5 @@ Based on the box plot, age group 35-44 years tends to have higher estimates than
 
 Conclusion:
 
-To begin my analysis, I first created a histogram to examine the distribution of suicide estimates. The histogram revealed that the data was right-skewed, indicating that while most suicide estimates were relatively low, some groups had significantly higher estimates. Next, I generated boxplots to compare the spread of suicide estimates across different demographic groups. The boxplots showed clear differences among age and racial/ethnic groups, with older males—especially those aged 85 years and over—having higher suicide estimates than younger groups. This visualization helped identify which groups were at the highest risk.
-
-After visualizing the data, I calculated the mean, median, mode, standard deviation, minimum, and maximum to summarize the central tendency and variability of suicide estimates. The mean was noticeably higher than the median, further confirming the right-skewed distribution observed in the histogram. To statistically test whether there were significant differences in suicide estimates across demographic groups, I conducted an ANOVA (Analysis of Variance). The ANOVA results showed a statistically significant difference, meaning that suicide estimates varied meaningfully between groups. This finding, combined with the visualizations, suggests that age, gender, and race/ethnicity impact suicide estimates, emphasizing the need for targeted mental health interventions for high-risk populations.
+To begin our analysis, we first created a histogram to examine the distribution of suicide estimates. The histogram revealed that the data was right-skewed, indicating that while most suicide estimates were relatively low, some groups had significantly higher estimates. Next, we generated boxplots to compare the spread of suicide estimates across different demographic groups. The boxplots showed clear differences among age and racial/ethnic groups, with older males—especially those aged 85 years and over—having higher suicide estimates than younger groups. These visualizations helped us identify which groups were at the highest risk.
+After visualizing the data, we calculated the mean, median, mode, standard deviation, minimum, and maximum to summarize the central tendency and variability of suicide estimates. The mean was noticeably higher than the median, further confirming the right-skewed distribution observed in the histogram. To statistically test whether there were significant differences in suicide estimates across demographic groups, we conducted an ANOVA (Analysis of Variance). The ANOVA results showed a statistically significant difference, meaning that suicide estimates varied meaningfully between groups. These findings, combined with the visualizations, suggest that age, gender, and race/ethnicity impact suicide estimates, emphasizing the need for targeted mental health interventions for high-risk populations.
