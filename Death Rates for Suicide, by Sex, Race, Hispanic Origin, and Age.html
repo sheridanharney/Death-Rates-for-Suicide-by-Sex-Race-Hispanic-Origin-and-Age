@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hely Bhavsar">
+
+<title>Death Rates for Suicide, by Sex, Race, Hispanic Origin, and Age</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Death Rates_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Death Rates_files/libs/quarto-html/quarto.js"></script>
+<script src="Death Rates_files/libs/quarto-html/popper.min.js"></script>
+<script src="Death Rates_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Death Rates_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Death Rates_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Death Rates_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Death Rates_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Death Rates_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Death Rates_files/libs/bootstrap/bootstrap-3dc9094430be18c8a5aac800159ef30a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Death Rates for Suicide, by Sex, Race, Hispanic Origin, and Age</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Hely Bhavsar </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://catalog.data.gov/dataset/death-rates-for-suicide-by-sex-race-hispanic-origin-and-age-united-states-020c1" class="uri">https://catalog.data.gov/dataset/death-rates-for-suicide-by-sex-race-hispanic-origin-and-age-united-states-020c1</a></p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This is a project analyzing suicide death rates.</p>
+</section>
+<section id="death-rates-questions" class="level2">
+<h2 class="anchored" data-anchor-id="death-rates-questions">Death Rates Questions</h2>
+<ol type="1">
+<li>Has the suicide estimate changed over time?</li>
+<li>How do suicide rate estimates differ across young adult age groups?</li>
+</ol>
+</section>
+<section id="running-code" class="level2">
+<h2 class="anchored" data-anchor-id="running-code">Running Code</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/Death_rates_for_suicide__by_sex__race__Hispanic_origin__and_age__United_States.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 6390 Columns: 13
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (6): INDICATOR, UNIT, STUB_NAME, STUB_LABEL, AGE, FLAG
+dbl (7): UNIT_NUM, STUB_NAME_NUM, STUB_LABEL_NUM, YEAR, YEAR_NUM, AGE_NUM, E...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.4'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States, <span class="fu">aes</span>(<span class="at">x =</span> ESTIMATE)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="st">"lightblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Suicide Rates"</span>, <span class="at">x =</span> <span class="st">"Suicide Rate (per 100,000)"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 906 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Death-Rates_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States, <span class="fu">aes</span>(<span class="at">x =</span> STUB_LABEL, <span class="at">y =</span> INDICATOR, <span class="at">fill =</span> STUB_LABEL)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Suicide Rates by Race"</span>, <span class="at">x =</span> <span class="st">"race"</span>, <span class="at">y =</span> <span class="st">"Suicide Rate (per 100,000)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Death-Rates_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>#Mean, Median, Mode, Standard Deviation, Min and Max</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"dplyr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Installing package into '/cloud/lib/x86_64-pc-linux-gnu-library/4.4'
+(as 'lib' is unspecified)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Mean</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>ESTIMATE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13.70981</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Median</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>ESTIMATE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10.5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mode (base R way)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>get_mode <span class="ot">&lt;-</span> <span class="cf">function</span>(v) {</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  uniqv <span class="ot">&lt;-</span> <span class="fu">unique</span>(v)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  uniqv[<span class="fu">which.max</span>(<span class="fu">tabulate</span>(<span class="fu">match</span>(v, uniqv)))]</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">get_mode</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>ESTIMATE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Standard Deviation</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>ESTIMATE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11.53181</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Minimum and Maximum</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>ESTIMATE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>ESTIMATE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 74.8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colnames</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "INDICATOR"      "UNIT"           "UNIT_NUM"       "STUB_NAME"     
+ [5] "STUB_NAME_NUM"  "STUB_LABEL"     "STUB_LABEL_NUM" "YEAR"          
+ [9] "YEAR_NUM"       "AGE"            "AGE_NUM"        "ESTIMATE"      
+[13] "FLAG"          </code></pre>
+</div>
+</div>
+<p>##Anova</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States)         </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>spc_tbl_ [6,390 × 13] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ INDICATOR     : chr [1:6390] "Death rates for suicide" "Death rates for suicide" "Death rates for suicide" "Death rates for suicide" ...
+ $ UNIT          : chr [1:6390] "Deaths per 100,000 resident population, age-adjusted" "Deaths per 100,000 resident population, age-adjusted" "Deaths per 100,000 resident population, age-adjusted" "Deaths per 100,000 resident population, age-adjusted" ...
+ $ UNIT_NUM      : num [1:6390] 1 1 1 1 1 1 1 1 1 1 ...
+ $ STUB_NAME     : chr [1:6390] "Total" "Total" "Total" "Total" ...
+ $ STUB_NAME_NUM : num [1:6390] 0 0 0 0 0 0 0 0 0 0 ...
+ $ STUB_LABEL    : chr [1:6390] "All persons" "All persons" "All persons" "All persons" ...
+ $ STUB_LABEL_NUM: num [1:6390] 0 0 0 0 0 0 0 0 0 0 ...
+ $ YEAR          : num [1:6390] 1950 1960 1970 1980 1981 ...
+ $ YEAR_NUM      : num [1:6390] 1 2 3 4 5 6 7 8 9 10 ...
+ $ AGE           : chr [1:6390] "All ages" "All ages" "All ages" "All ages" ...
+ $ AGE_NUM       : num [1:6390] 0 0 0 0 0 0 0 0 0 0 ...
+ $ ESTIMATE      : num [1:6390] 13.2 12.5 13.1 12.2 12.3 12.5 12.4 12.6 12.5 13 ...
+ $ FLAG          : chr [1:6390] NA NA NA NA ...
+ - attr(*, "spec")=
+  .. cols(
+  ..   INDICATOR = col_character(),
+  ..   UNIT = col_character(),
+  ..   UNIT_NUM = col_double(),
+  ..   STUB_NAME = col_character(),
+  ..   STUB_NAME_NUM = col_double(),
+  ..   STUB_LABEL = col_character(),
+  ..   STUB_LABEL_NUM = col_double(),
+  ..   YEAR = col_double(),
+  ..   YEAR_NUM = col_double(),
+  ..   AGE = col_character(),
+  ..   AGE_NUM = col_double(),
+  ..   ESTIMATE = col_double(),
+  ..   FLAG = col_character()
+  .. )
+ - attr(*, "problems")=&lt;externalptr&gt; </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unique</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>STUB_LABEL) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "All persons"                                                                                 
+  [2] "Male"                                                                                        
+  [3] "Female"                                                                                      
+  [4] "Male: White"                                                                                 
+  [5] "Male: Black or African American"                                                             
+  [6] "Male: American Indian or Alaska Native"                                                      
+  [7] "Male: Asian or Pacific Islander"                                                             
+  [8] "Female: White"                                                                               
+  [9] "Female: Black or African American"                                                           
+ [10] "Female: American Indian or Alaska Native"                                                    
+ [11] "Female: Asian or Pacific Islander"                                                           
+ [12] "Male: Not Hispanic or Latino: White"                                                         
+ [13] "Male: Not Hispanic or Latino: Black or African American"                                     
+ [14] "Male: Hispanic or Latino: All races"                                                         
+ [15] "Male: Not Hispanic or Latino: American Indian or Alaska Native"                              
+ [16] "Male: Not Hispanic or Latino: Asian or Pacific Islander"                                     
+ [17] "Female: Not Hispanic or Latino: White"                                                       
+ [18] "Female: Not Hispanic or Latino: Black or African American"                                   
+ [19] "Female: Hispanic or Latino: All races"                                                       
+ [20] "Female: Not Hispanic or Latino: American Indian or Alaska Native"                            
+ [21] "Female: Not Hispanic or Latino: Asian or Pacific Islander"                                   
+ [22] "Male: Not Hispanic or Latino: Asian"                                                         
+ [23] "Male: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander"                     
+ [24] "Female: Not Hispanic or Latino: Asian"                                                       
+ [25] "Female: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander"                   
+ [26] "10-14 years"                                                                                 
+ [27] "15-24 years"                                                                                 
+ [28] "15-19 years"                                                                                 
+ [29] "20-24 years"                                                                                 
+ [30] "25-44 years"                                                                                 
+ [31] "25-34 years"                                                                                 
+ [32] "35-44 years"                                                                                 
+ [33] "45-64 years"                                                                                 
+ [34] "45-54 years"                                                                                 
+ [35] "55-64 years"                                                                                 
+ [36] "65 years and over"                                                                           
+ [37] "65-74 years"                                                                                 
+ [38] "75-84 years"                                                                                 
+ [39] "85 years and over"                                                                           
+ [40] "Male: 10-14 years"                                                                           
+ [41] "Male: 15-24 years"                                                                           
+ [42] "Male: 15-19 years"                                                                           
+ [43] "Male: 20-24 years"                                                                           
+ [44] "Male: 25-44 years"                                                                           
+ [45] "Male: 25-34 years"                                                                           
+ [46] "Male: 35-44 years"                                                                           
+ [47] "Male: 45-64 years"                                                                           
+ [48] "Male: 45-54 years"                                                                           
+ [49] "Male: 55-64 years"                                                                           
+ [50] "Male: 65 years and over"                                                                     
+ [51] "Male: 65-74 years"                                                                           
+ [52] "Male: 75-84 years"                                                                           
+ [53] "Male: 85 years and over"                                                                     
+ [54] "Female: 10-14 years"                                                                         
+ [55] "Female: 15-24 years"                                                                         
+ [56] "Female: 15-19 years"                                                                         
+ [57] "Female: 20-24 years"                                                                         
+ [58] "Female: 25-44 years"                                                                         
+ [59] "Female: 25-34 years"                                                                         
+ [60] "Female: 35-44 years"                                                                         
+ [61] "Female: 45-64 years"                                                                         
+ [62] "Female: 45-54 years"                                                                         
+ [63] "Female: 55-64 years"                                                                         
+ [64] "Female: 65 years and over"                                                                   
+ [65] "Female: 65-74 years"                                                                         
+ [66] "Female: 75-84 years"                                                                         
+ [67] "Female: 85 years and over"                                                                   
+ [68] "Male: White: 15-24 years"                                                                    
+ [69] "Male: White: 25-44 years"                                                                    
+ [70] "Male: White: 45-64 years"                                                                    
+ [71] "Male: White: 65 years and over"                                                              
+ [72] "Male: White: 65-74 years"                                                                    
+ [73] "Male: White: 75-84 years"                                                                    
+ [74] "Male: White: 85 years and over"                                                              
+ [75] "Male: Black or African American: 15-24 years"                                                
+ [76] "Male: Black or African American: 25-44 years"                                                
+ [77] "Male: Black or African American: 45-64 years"                                                
+ [78] "Male: Black or African American: 65 years and over"                                          
+ [79] "Male: Black or African American: 65-74 years"                                                
+ [80] "Male: Black or African American: 75-84 years"                                                
+ [81] "Male: Black or African American: 85 years and over"                                          
+ [82] "Male: American Indian or Alaska Native: 15-24 years"                                         
+ [83] "Male: American Indian or Alaska Native: 25-44 years"                                         
+ [84] "Male: American Indian or Alaska Native: 45-64 years"                                         
+ [85] "Male: American Indian or Alaska Native: 65 years and over"                                   
+ [86] "Male: Asian or Pacific Islander: 15-24 years"                                                
+ [87] "Male: Asian or Pacific Islander: 25-44 years"                                                
+ [88] "Male: Asian or Pacific Islander: 45-64 years"                                                
+ [89] "Male: Asian or Pacific Islander: 65 years and over"                                          
+ [90] "Female: White: 15-24 years"                                                                  
+ [91] "Female: White: 25-44 years"                                                                  
+ [92] "Female: White: 45-64 years"                                                                  
+ [93] "Female: White: 65 years and over"                                                            
+ [94] "Female: Black or African American: 15-24 years"                                              
+ [95] "Female: Black or African American: 25-44 years"                                              
+ [96] "Female: Black or African American: 45-64 years"                                              
+ [97] "Female: Black or African American: 65 years and over"                                        
+ [98] "Female: American Indian or Alaska Native: 15-24 years"                                       
+ [99] "Female: American Indian or Alaska Native: 25-44 years"                                       
+[100] "Female: American Indian or Alaska Native: 45-64 years"                                       
+[101] "Female: American Indian or Alaska Native: 65 years and over"                                 
+[102] "Female: Asian or Pacific Islander: 15-24 years"                                              
+[103] "Female: Asian or Pacific Islander: 25-44 years"                                              
+[104] "Female: Asian or Pacific Islander: 45-64 years"                                              
+[105] "Female: Asian or Pacific Islander: 65 years and over"                                        
+[106] "Male: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years"                 
+[107] "Male: Not Hispanic or Latino: White: 15-24 years"                                            
+[108] "Male: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years"                 
+[109] "Male: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years"                 
+[110] "Male: Not Hispanic or Latino: American Indian or Alaska Native: 65 years and over"           
+[111] "Male: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years"                        
+[112] "Male: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years"                        
+[113] "Male: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years"                        
+[114] "Male: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over"                  
+[115] "Female: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years"               
+[116] "Female: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years"               
+[117] "Female: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years"               
+[118] "Female: Not Hispanic or Latino: American Indian or Alaska Native: 65 years and over"         
+[119] "Female: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years"                      
+[120] "Female: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years"                      
+[121] "Female: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years"                      
+[122] "Female: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over"                
+[123] "Male: Not Hispanic or Latino: White: 25-44 years"                                            
+[124] "Male: Not Hispanic or Latino: White: 45-64 years"                                            
+[125] "Male: Not Hispanic or Latino: White: 65 years and over"                                      
+[126] "Male: Not Hispanic or Latino: Black or African American: 15-24 years"                        
+[127] "Male: Not Hispanic or Latino: Black or African American: 25-44 years"                        
+[128] "Male: Not Hispanic or Latino: Black or African American: 45-64 years"                        
+[129] "Male: Not Hispanic or Latino: Black or African American: 65 years and over"                  
+[130] "Male: Hispanic or Latino: All races: 15-24 years"                                            
+[131] "Male: Hispanic or Latino: All races: 25-44 years"                                            
+[132] "Male: Hispanic or Latino: All races: 45-64 years"                                            
+[133] "Male: Hispanic or Latino: All races: 65 years and over"                                      
+[134] "Female: Not Hispanic or Latino: White: 15-24 years"                                          
+[135] "Female: Not Hispanic or Latino: White: 25-44 years"                                          
+[136] "Female: Not Hispanic or Latino: White: 45-64 years"                                          
+[137] "Female: Not Hispanic or Latino: White: 65 years and over"                                    
+[138] "Female: Not Hispanic or Latino: Black or African American: 15-24 years"                      
+[139] "Female: Not Hispanic or Latino: Black or African American: 25-44 years"                      
+[140] "Female: Not Hispanic or Latino: Black or African American: 45-64 years"                      
+[141] "Female: Not Hispanic or Latino: Black or African American: 65 years and over"                
+[142] "Female: Hispanic or Latino: All races: 15-24 years"                                          
+[143] "Female: Hispanic or Latino: All races: 25-44 years"                                          
+[144] "Female: Hispanic or Latino: All races: 45-64 years"                                          
+[145] "Female: Hispanic or Latino: All races: 65 years and over"                                    
+[146] "Male: Not Hispanic or Latino: Asian: 15-24 years"                                            
+[147] "Male: Not Hispanic or Latino: Asian: 25-44 years"                                            
+[148] "Male: Not Hispanic or Latino: Asian: 45-64 years"                                            
+[149] "Male: Not Hispanic or Latino: Asian: 65 years and over"                                      
+[150] "Male: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 15-24 years"        
+[151] "Male: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 25-44 years"        
+[152] "Male: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 45-64 years"        
+[153] "Male: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 65 years and over"  
+[154] "Female: Not Hispanic or Latino: Asian: 15-24 years"                                          
+[155] "Female: Not Hispanic or Latino: Asian: 25-44 years"                                          
+[156] "Female: Not Hispanic or Latino: Asian: 45-64 years"                                          
+[157] "Female: Not Hispanic or Latino: Asian: 65 years and over"                                    
+[158] "Female: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 15-24 years"      
+[159] "Female: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 25-44 years"      
+[160] "Female: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 45-64 years"      
+[161] "Female: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 65 years and over"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>    aov_result <span class="ot">&lt;-</span> <span class="fu">aov</span>(ESTIMATE <span class="sc">~</span> STUB_LABEL, <span class="at">data =</span> Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(aov_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+STUB_LABEL   149 685820    4603   566.7 &lt;2e-16 ***
+Residuals   5334  43323       8                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+906 observations deleted due to missingness</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>    correlation_result <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span><span class="st">"AGE_NUM"</span>, Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>ESTIMATE)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(correlation_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States$AGE_NUM and Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States$ESTIMATE
+t = 25.505, df = 5482, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3018274 0.3491512
+sample estimates:
+      cor 
+0.3256933 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>    Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>STUB_LABEL <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>STUB_LABEL)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    model <span class="ot">&lt;-</span> <span class="fu">lm</span>(ESTIMATE <span class="sc">~</span> STUB_LABEL, <span class="at">data =</span> Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = ESTIMATE ~ STUB_LABEL, data = Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-15.4476  -1.1357  -0.1644   0.9086  22.4465 
+
+Coefficients:
+                                                                                               Estimate
+(Intercept)                                                                                      1.4095
+STUB_LABEL15-19 years                                                                            7.3286
+STUB_LABEL15-24 years                                                                            9.9143
+STUB_LABEL20-24 years                                                                           12.4405
+STUB_LABEL25-34 years                                                                           12.9310
+STUB_LABEL25-44 years                                                                           13.5429
+STUB_LABEL35-44 years                                                                           14.1095
+STUB_LABEL45-54 years                                                                           15.5524
+STUB_LABEL45-64 years                                                                           15.2857
+STUB_LABEL55-64 years                                                                           14.9000
+STUB_LABEL65 years and over                                                                     16.3762
+STUB_LABEL65-74 years                                                                           14.6429
+STUB_LABEL75-84 years                                                                           18.5881
+STUB_LABEL85 years and over                                                                     18.4476
+STUB_LABELAll persons                                                                           10.6714
+STUB_LABELFemale                                                                                 3.6512
+STUB_LABELFemale: 10-14 years                                                                   -0.5720
+STUB_LABELFemale: 15-19 years                                                                    2.0071
+STUB_LABELFemale: 15-24 years                                                                    2.4952
+STUB_LABELFemale: 20-24 years                                                                    2.9714
+STUB_LABELFemale: 25-34 years                                                                    4.2452
+STUB_LABELFemale: 25-44 years                                                                    5.1143
+STUB_LABELFemale: 35-44 years                                                                    6.0071
+STUB_LABELFemale: 45-54 years                                                                    7.2381
+STUB_LABELFemale: 45-64 years                                                                    6.7119
+STUB_LABELFemale: 55-64 years                                                                    6.0595
+STUB_LABELFemale: 65 years and over                                                              3.9976
+STUB_LABELFemale: 65-74 years                                                                    4.3310
+STUB_LABELFemale: 75-84 years                                                                    3.7690
+STUB_LABELFemale: 85 years and over                                                              3.1238
+STUB_LABELFemale: American Indian or Alaska Native                                               3.2580
+STUB_LABELFemale: American Indian or Alaska Native: 15-24 years                                  8.1405
+STUB_LABELFemale: American Indian or Alaska Native: 25-44 years                                  6.1605
+STUB_LABELFemale: American Indian or Alaska Native: 45-64 years                                  4.4905
+STUB_LABELFemale: Asian or Pacific Islander                                                      2.3419
+STUB_LABELFemale: Asian or Pacific Islander: 15-24 years                                         2.7939
+STUB_LABELFemale: Asian or Pacific Islander: 25-44 years                                         2.5359
+STUB_LABELFemale: Asian or Pacific Islander: 45-64 years                                         3.1405
+STUB_LABELFemale: Asian or Pacific Islander: 65 years and over                                   5.2905
+STUB_LABELFemale: Black or African American                                                      0.7548
+STUB_LABELFemale: Black or African American: 15-24 years                                         1.0524
+STUB_LABELFemale: Black or African American: 25-44 years                                         1.7695
+STUB_LABELFemale: Black or African American: 45-64 years                                         1.2305
+STUB_LABELFemale: Black or African American: 65 years and over                                   0.2723
+STUB_LABELFemale: Hispanic or Latino: All races                                                  0.6219
+STUB_LABELFemale: Hispanic or Latino: All races: 15-24 years                                     1.3619
+STUB_LABELFemale: Hispanic or Latino: All races: 25-44 years                                     1.2590
+STUB_LABELFemale: Hispanic or Latino: All races: 45-64 years                                     1.3819
+STUB_LABELFemale: Hispanic or Latino: All races: 65 years and over                               0.6524
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native                       6.1643
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years         13.6258
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years         10.5381
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years          6.6305
+STUB_LABELFemale: Not Hispanic or Latino: Asian                                                  2.4905
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander                              2.0280
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years                 2.7957
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years                 2.4705
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years                 2.8505
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over           3.9655
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 15-24 years                                     5.4905
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 25-44 years                                     2.7905
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 45-64 years                                     3.3905
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 65 years and over                               2.1905
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American                              0.5952
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 15-24 years                 1.2000
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 25-44 years                 1.6810
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 45-64 years                 0.9619
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 65 years and over          -0.1229
+STUB_LABELFemale: Not Hispanic or Latino: White                                                  4.6419
+STUB_LABELFemale: Not Hispanic or Latino: White: 15-24 years                                     3.0476
+STUB_LABELFemale: Not Hispanic or Latino: White: 25-44 years                                     6.5333
+STUB_LABELFemale: Not Hispanic or Latino: White: 45-64 years                                     8.0648
+STUB_LABELFemale: Not Hispanic or Latino: White: 65 years and over                               4.1562
+STUB_LABELFemale: White                                                                          4.2254
+STUB_LABELFemale: White: 15-24 years                                                             2.7626
+STUB_LABELFemale: White: 25-44 years                                                             5.8742
+STUB_LABELFemale: White: 45-64 years                                                             7.7184
+STUB_LABELFemale: White: 65 years and over                                                       4.3602
+STUB_LABELMale                                                                                  18.2821
+STUB_LABELMale: 10-14 years                                                                      0.5786
+STUB_LABELMale: 15-19 years                                                                     12.3810
+STUB_LABELMale: 15-24 years                                                                     17.0286
+STUB_LABELMale: 20-24 years                                                                     21.6333
+STUB_LABELMale: 25-34 years                                                                     21.5667
+STUB_LABELMale: 25-44 years                                                                     22.0167
+STUB_LABELMale: 35-44 years                                                                     22.3524
+STUB_LABELMale: 45-54 years                                                                     24.2071
+STUB_LABELMale: 45-64 years                                                                     24.4000
+STUB_LABELMale: 55-64 years                                                                     24.5476
+STUB_LABELMale: 65 years and over                                                               33.5976
+STUB_LABELMale: 65-74 years                                                                     27.1929
+STUB_LABELMale: 75-84 years                                                                     41.1405
+STUB_LABELMale: 85 years and over                                                               53.1714
+STUB_LABELMale: American Indian or Alaska Native                                                16.6364
+STUB_LABELMale: American Indian or Alaska Native: 15-24 years                                   31.2934
+STUB_LABELMale: American Indian or Alaska Native: 25-44 years                                   26.3758
+STUB_LABELMale: American Indian or Alaska Native: 45-64 years                                   13.6720
+STUB_LABELMale: American Indian or Alaska Native: 65 years and over                             11.2405
+STUB_LABELMale: Asian or Pacific Islander                                                        7.4877
+STUB_LABELMale: Asian or Pacific Islander: 15-24 years                                           9.8238
+STUB_LABELMale: Asian or Pacific Islander: 25-44 years                                           8.8117
+STUB_LABELMale: Asian or Pacific Islander: 45-64 years                                           9.1238
+STUB_LABELMale: Asian or Pacific Islander: 65 years and over                                    13.9874
+STUB_LABELMale: Black or African American                                                        8.9364
+STUB_LABELMale: Black or African American: 15-24 years                                          11.7649
+STUB_LABELMale: Black or African American: 25-44 years                                          15.0347
+STUB_LABELMale: Black or African American: 45-64 years                                           9.7660
+STUB_LABELMale: Black or African American: 65 years and over                                    10.4541
+STUB_LABELMale: Black or African American: 65-74 years                                           9.7184
+STUB_LABELMale: Black or African American: 75-84 years                                          12.1480
+STUB_LABELMale: Hispanic or Latino: All races                                                    8.9648
+STUB_LABELMale: Hispanic or Latino: All races: 15-24 years                                      11.4619
+STUB_LABELMale: Hispanic or Latino: All races: 25-44 years                                      11.8990
+STUB_LABELMale: Hispanic or Latino: All races: 45-64 years                                      11.4733
+STUB_LABELMale: Hispanic or Latino: All races: 65 years and over                                16.5248
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native                        24.6310
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years           43.2381
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years           41.5619
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years           20.3524
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 65 years and over     15.2905
+STUB_LABELMale: Not Hispanic or Latino: Asian                                                    8.7405
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander                                7.4155
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years                   9.4905
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years                   8.8905
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years                   9.5155
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over            12.3355
+STUB_LABELMale: Not Hispanic or Latino: Asian: 15-24 years                                      14.0905
+STUB_LABELMale: Not Hispanic or Latino: Asian: 25-44 years                                       9.0905
+STUB_LABELMale: Not Hispanic or Latino: Asian: 45-64 years                                      10.8905
+STUB_LABELMale: Not Hispanic or Latino: Asian: 65 years and over                                12.2905
+STUB_LABELMale: Not Hispanic or Latino: Black or African American                                8.4952
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 15-24 years                  11.7143
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 25-44 years                  14.2524
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 45-64 years                   8.5143
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 65 years and over             8.4571
+STUB_LABELMale: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander               18.8405
+STUB_LABELMale: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 25-44 years  36.6905
+STUB_LABELMale: Not Hispanic or Latino: White                                                   22.1305
+STUB_LABELMale: Not Hispanic or Latino: White: 15-24 years                                      20.4219
+STUB_LABELMale: Not Hispanic or Latino: White: 25-44 years                                      26.9590
+STUB_LABELMale: Not Hispanic or Latino: White: 45-64 years                                      28.2305
+STUB_LABELMale: Not Hispanic or Latino: White: 65 years and over                                36.1105
+STUB_LABELMale: White                                                                           20.1742
+STUB_LABELMale: White: 15-24 years                                                              18.3184
+STUB_LABELMale: White: 25-44 years                                                              23.9161
+STUB_LABELMale: White: 45-64 years                                                              27.0742
+STUB_LABELMale: White: 65 years and over                                                        36.1812
+STUB_LABELMale: White: 65-74 years                                                              29.3440
+STUB_LABELMale: White: 75-84 years                                                              44.0882
+STUB_LABELMale: White: 85 years and over                                                        57.0672
+                                                                                               Std. Error
+(Intercept)                                                                                        0.4398
+STUB_LABEL15-19 years                                                                              0.6219
+STUB_LABEL15-24 years                                                                              0.6219
+STUB_LABEL20-24 years                                                                              0.6219
+STUB_LABEL25-34 years                                                                              0.6219
+STUB_LABEL25-44 years                                                                              0.6219
+STUB_LABEL35-44 years                                                                              0.6219
+STUB_LABEL45-54 years                                                                              0.6219
+STUB_LABEL45-64 years                                                                              0.6219
+STUB_LABEL55-64 years                                                                              0.6219
+STUB_LABEL65 years and over                                                                        0.6219
+STUB_LABEL65-74 years                                                                              0.6219
+STUB_LABEL75-84 years                                                                              0.6219
+STUB_LABEL85 years and over                                                                        0.6219
+STUB_LABELAll persons                                                                              0.5386
+STUB_LABELFemale                                                                                   0.5386
+STUB_LABELFemale: 10-14 years                                                                      0.6296
+STUB_LABELFemale: 15-19 years                                                                      0.6219
+STUB_LABELFemale: 15-24 years                                                                      0.6219
+STUB_LABELFemale: 20-24 years                                                                      0.6219
+STUB_LABELFemale: 25-34 years                                                                      0.6219
+STUB_LABELFemale: 25-44 years                                                                      0.6219
+STUB_LABELFemale: 35-44 years                                                                      0.6219
+STUB_LABELFemale: 45-54 years                                                                      0.6219
+STUB_LABELFemale: 45-64 years                                                                      0.6219
+STUB_LABELFemale: 55-64 years                                                                      0.6219
+STUB_LABELFemale: 65 years and over                                                                0.6219
+STUB_LABELFemale: 65-74 years                                                                      0.6219
+STUB_LABELFemale: 75-84 years                                                                      0.6219
+STUB_LABELFemale: 85 years and over                                                                0.6219
+STUB_LABELFemale: American Indian or Alaska Native                                                 0.5506
+STUB_LABELFemale: American Indian or Alaska Native: 15-24 years                                    0.7743
+STUB_LABELFemale: American Indian or Alaska Native: 25-44 years                                    0.6813
+STUB_LABELFemale: American Indian or Alaska Native: 45-64 years                                    1.0994
+STUB_LABELFemale: Asian or Pacific Islander                                                        0.5533
+STUB_LABELFemale: Asian or Pacific Islander: 15-24 years                                           0.6881
+STUB_LABELFemale: Asian or Pacific Islander: 25-44 years                                           0.6629
+STUB_LABELFemale: Asian or Pacific Islander: 45-64 years                                           0.6687
+STUB_LABELFemale: Asian or Pacific Islander: 65 years and over                                     0.6687
+STUB_LABELFemale: Black or African American                                                        0.5355
+STUB_LABELFemale: Black or African American: 15-24 years                                           0.6219
+STUB_LABELFemale: Black or African American: 25-44 years                                           0.6183
+STUB_LABELFemale: Black or African American: 45-64 years                                           0.6114
+STUB_LABELFemale: Black or African American: 65 years and over                                     0.6629
+STUB_LABELFemale: Hispanic or Latino: All races                                                    0.5562
+STUB_LABELFemale: Hispanic or Latino: All races: 15-24 years                                       0.6523
+STUB_LABELFemale: Hispanic or Latino: All races: 25-44 years                                       0.6523
+STUB_LABELFemale: Hispanic or Latino: All races: 45-64 years                                       0.6523
+STUB_LABELFemale: Hispanic or Latino: All races: 65 years and over                                 0.7617
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native                         0.6219
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years            0.8192
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years            0.7617
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years            1.0028
+STUB_LABELFemale: Not Hispanic or Latino: Asian                                                    2.0626
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander                                0.6296
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years                   0.7879
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years                   0.7743
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years                   0.7743
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over             0.7743
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 15-24 years                                       2.8836
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 25-44 years                                       2.8836
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 45-64 years                                       2.8836
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 65 years and over                                 2.8836
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American                                0.6219
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 15-24 years                   0.7617
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 25-44 years                   0.7617
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 45-64 years                   0.7617
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 65 years and over             0.8572
+STUB_LABELFemale: Not Hispanic or Latino: White                                                    0.5562
+STUB_LABELFemale: Not Hispanic or Latino: White: 15-24 years                                       0.6523
+STUB_LABELFemale: Not Hispanic or Latino: White: 25-44 years                                       0.6523
+STUB_LABELFemale: Not Hispanic or Latino: White: 45-64 years                                       0.6523
+STUB_LABELFemale: Not Hispanic or Latino: White: 65 years and over                                 0.6523
+STUB_LABELFemale: White                                                                            0.5365
+STUB_LABELFemale: White: 15-24 years                                                               0.6183
+STUB_LABELFemale: White: 25-44 years                                                               0.6183
+STUB_LABELFemale: White: 45-64 years                                                               0.6183
+STUB_LABELFemale: White: 65 years and over                                                         0.6183
+STUB_LABELMale                                                                                     0.5386
+STUB_LABELMale: 10-14 years                                                                        0.6219
+STUB_LABELMale: 15-19 years                                                                        0.6219
+STUB_LABELMale: 15-24 years                                                                        0.6219
+STUB_LABELMale: 20-24 years                                                                        0.6219
+STUB_LABELMale: 25-34 years                                                                        0.6219
+STUB_LABELMale: 25-44 years                                                                        0.6219
+STUB_LABELMale: 35-44 years                                                                        0.6219
+STUB_LABELMale: 45-54 years                                                                        0.6219
+STUB_LABELMale: 45-64 years                                                                        0.6219
+STUB_LABELMale: 55-64 years                                                                        0.6219
+STUB_LABELMale: 65 years and over                                                                  0.6219
+STUB_LABELMale: 65-74 years                                                                        0.6219
+STUB_LABELMale: 75-84 years                                                                        0.6219
+STUB_LABELMale: 85 years and over                                                                  0.6219
+STUB_LABELMale: American Indian or Alaska Native                                                   0.5506
+STUB_LABELMale: American Indian or Alaska Native: 15-24 years                                      0.6575
+STUB_LABELMale: American Indian or Alaska Native: 25-44 years                                      0.6575
+STUB_LABELMale: American Indian or Alaska Native: 45-64 years                                      0.7030
+STUB_LABELMale: American Indian or Alaska Native: 65 years and over                                1.4913
+STUB_LABELMale: Asian or Pacific Islander                                                          0.5533
+STUB_LABELMale: Asian or Pacific Islander: 15-24 years                                             0.6629
+STUB_LABELMale: Asian or Pacific Islander: 25-44 years                                             0.6629
+STUB_LABELMale: Asian or Pacific Islander: 45-64 years                                             0.6629
+STUB_LABELMale: Asian or Pacific Islander: 65 years and over                                       0.6629
+STUB_LABELMale: Black or African American                                                          0.5375
+STUB_LABELMale: Black or African American: 15-24 years                                             0.6183
+STUB_LABELMale: Black or African American: 25-44 years                                             0.6183
+STUB_LABELMale: Black or African American: 45-64 years                                             0.6114
+STUB_LABELMale: Black or African American: 65 years and over                                       0.6148
+STUB_LABELMale: Black or African American: 65-74 years                                             0.6183
+STUB_LABELMale: Black or African American: 75-84 years                                             0.6296
+STUB_LABELMale: Hispanic or Latino: All races                                                      0.5562
+STUB_LABELMale: Hispanic or Latino: All races: 15-24 years                                         0.6523
+STUB_LABELMale: Hispanic or Latino: All races: 25-44 years                                         0.6523
+STUB_LABELMale: Hispanic or Latino: All races: 45-64 years                                         0.6523
+STUB_LABELMale: Hispanic or Latino: All races: 65 years and over                                   0.6523
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native                           0.6219
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years              0.7617
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years              0.7617
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years              0.7617
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 65 years and over        1.4913
+STUB_LABELMale: Not Hispanic or Latino: Asian                                                      2.0626
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander                                  0.6296
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years                     0.7743
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years                     0.7743
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years                     0.7743
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over               0.7743
+STUB_LABELMale: Not Hispanic or Latino: Asian: 15-24 years                                         2.8836
+STUB_LABELMale: Not Hispanic or Latino: Asian: 25-44 years                                         2.8836
+STUB_LABELMale: Not Hispanic or Latino: Asian: 45-64 years                                         2.8836
+STUB_LABELMale: Not Hispanic or Latino: Asian: 65 years and over                                   2.8836
+STUB_LABELMale: Not Hispanic or Latino: Black or African American                                  0.6219
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 15-24 years                     0.7617
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 25-44 years                     0.7617
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 45-64 years                     0.7617
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 65 years and over               0.7617
+STUB_LABELMale: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander                  2.0626
+STUB_LABELMale: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 25-44 years     2.8836
+STUB_LABELMale: Not Hispanic or Latino: White                                                      0.5562
+STUB_LABELMale: Not Hispanic or Latino: White: 15-24 years                                         0.6523
+STUB_LABELMale: Not Hispanic or Latino: White: 25-44 years                                         0.6523
+STUB_LABELMale: Not Hispanic or Latino: White: 45-64 years                                         0.6523
+STUB_LABELMale: Not Hispanic or Latino: White: 65 years and over                                   0.6523
+STUB_LABELMale: White                                                                              0.5365
+STUB_LABELMale: White: 15-24 years                                                                 0.6183
+STUB_LABELMale: White: 25-44 years                                                                 0.6183
+STUB_LABELMale: White: 45-64 years                                                                 0.6183
+STUB_LABELMale: White: 65 years and over                                                           0.6183
+STUB_LABELMale: White: 65-74 years                                                                 0.6183
+STUB_LABELMale: White: 75-84 years                                                                 0.6183
+STUB_LABELMale: White: 85 years and over                                                           0.6183
+                                                                                               t value
+(Intercept)                                                                                      3.205
+STUB_LABEL15-19 years                                                                           11.784
+STUB_LABEL15-24 years                                                                           15.942
+STUB_LABEL20-24 years                                                                           20.004
+STUB_LABEL25-34 years                                                                           20.793
+STUB_LABEL25-44 years                                                                           21.777
+STUB_LABEL35-44 years                                                                           22.688
+STUB_LABEL45-54 years                                                                           25.008
+STUB_LABEL45-64 years                                                                           24.579
+STUB_LABEL55-64 years                                                                           23.959
+STUB_LABEL65 years and over                                                                     26.332
+STUB_LABEL65-74 years                                                                           23.545
+STUB_LABEL75-84 years                                                                           29.889
+STUB_LABEL85 years and over                                                                     29.663
+STUB_LABELAll persons                                                                           19.814
+STUB_LABELFemale                                                                                 6.779
+STUB_LABELFemale: 10-14 years                                                                   -0.909
+STUB_LABELFemale: 15-19 years                                                                    3.227
+STUB_LABELFemale: 15-24 years                                                                    4.012
+STUB_LABELFemale: 20-24 years                                                                    4.778
+STUB_LABELFemale: 25-34 years                                                                    6.826
+STUB_LABELFemale: 25-44 years                                                                    8.224
+STUB_LABELFemale: 35-44 years                                                                    9.659
+STUB_LABELFemale: 45-54 years                                                                   11.639
+STUB_LABELFemale: 45-64 years                                                                   10.793
+STUB_LABELFemale: 55-64 years                                                                    9.744
+STUB_LABELFemale: 65 years and over                                                              6.428
+STUB_LABELFemale: 65-74 years                                                                    6.964
+STUB_LABELFemale: 75-84 years                                                                    6.061
+STUB_LABELFemale: 85 years and over                                                              5.023
+STUB_LABELFemale: American Indian or Alaska Native                                               5.917
+STUB_LABELFemale: American Indian or Alaska Native: 15-24 years                                 10.514
+STUB_LABELFemale: American Indian or Alaska Native: 25-44 years                                  9.043
+STUB_LABELFemale: American Indian or Alaska Native: 45-64 years                                  4.085
+STUB_LABELFemale: Asian or Pacific Islander                                                      4.232
+STUB_LABELFemale: Asian or Pacific Islander: 15-24 years                                         4.060
+STUB_LABELFemale: Asian or Pacific Islander: 25-44 years                                         3.825
+STUB_LABELFemale: Asian or Pacific Islander: 45-64 years                                         4.696
+STUB_LABELFemale: Asian or Pacific Islander: 65 years and over                                   7.911
+STUB_LABELFemale: Black or African American                                                      1.410
+STUB_LABELFemale: Black or African American: 15-24 years                                         1.692
+STUB_LABELFemale: Black or African American: 25-44 years                                         2.862
+STUB_LABELFemale: Black or African American: 45-64 years                                         2.012
+STUB_LABELFemale: Black or African American: 65 years and over                                   0.411
+STUB_LABELFemale: Hispanic or Latino: All races                                                  1.118
+STUB_LABELFemale: Hispanic or Latino: All races: 15-24 years                                     2.088
+STUB_LABELFemale: Hispanic or Latino: All races: 25-44 years                                     1.930
+STUB_LABELFemale: Hispanic or Latino: All races: 45-64 years                                     2.119
+STUB_LABELFemale: Hispanic or Latino: All races: 65 years and over                               0.857
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native                       9.912
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years         16.632
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years         13.835
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years          6.612
+STUB_LABELFemale: Not Hispanic or Latino: Asian                                                  1.207
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander                              3.221
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years                 3.548
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years                 3.191
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years                 3.682
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over           5.122
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 15-24 years                                     1.904
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 25-44 years                                     0.968
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 45-64 years                                     1.176
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 65 years and over                               0.760
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American                              0.957
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 15-24 years                 1.575
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 25-44 years                 2.207
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 45-64 years                 1.263
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 65 years and over          -0.143
+STUB_LABELFemale: Not Hispanic or Latino: White                                                  8.345
+STUB_LABELFemale: Not Hispanic or Latino: White: 15-24 years                                     4.672
+STUB_LABELFemale: Not Hispanic or Latino: White: 25-44 years                                    10.017
+STUB_LABELFemale: Not Hispanic or Latino: White: 45-64 years                                    12.364
+STUB_LABELFemale: Not Hispanic or Latino: White: 65 years and over                               6.372
+STUB_LABELFemale: White                                                                          7.876
+STUB_LABELFemale: White: 15-24 years                                                             4.468
+STUB_LABELFemale: White: 25-44 years                                                             9.501
+STUB_LABELFemale: White: 45-64 years                                                            12.484
+STUB_LABELFemale: White: 65 years and over                                                       7.052
+STUB_LABELMale                                                                                  33.945
+STUB_LABELMale: 10-14 years                                                                      0.930
+STUB_LABELMale: 15-19 years                                                                     19.908
+STUB_LABELMale: 15-24 years                                                                     27.381
+STUB_LABELMale: 20-24 years                                                                     34.786
+STUB_LABELMale: 25-34 years                                                                     34.679
+STUB_LABELMale: 25-44 years                                                                     35.402
+STUB_LABELMale: 35-44 years                                                                     35.942
+STUB_LABELMale: 45-54 years                                                                     38.924
+STUB_LABELMale: 45-64 years                                                                     39.234
+STUB_LABELMale: 55-64 years                                                                     39.472
+STUB_LABELMale: 65 years and over                                                               54.024
+STUB_LABELMale: 65-74 years                                                                     43.725
+STUB_LABELMale: 75-84 years                                                                     66.153
+STUB_LABELMale: 85 years and over                                                               85.498
+STUB_LABELMale: American Indian or Alaska Native                                                30.216
+STUB_LABELMale: American Indian or Alaska Native: 15-24 years                                   47.597
+STUB_LABELMale: American Indian or Alaska Native: 25-44 years                                   40.117
+STUB_LABELMale: American Indian or Alaska Native: 45-64 years                                   19.448
+STUB_LABELMale: American Indian or Alaska Native: 65 years and over                              7.538
+STUB_LABELMale: Asian or Pacific Islander                                                       13.532
+STUB_LABELMale: Asian or Pacific Islander: 15-24 years                                          14.818
+STUB_LABELMale: Asian or Pacific Islander: 25-44 years                                          13.292
+STUB_LABELMale: Asian or Pacific Islander: 45-64 years                                          13.762
+STUB_LABELMale: Asian or Pacific Islander: 65 years and over                                    21.099
+STUB_LABELMale: Black or African American                                                       16.625
+STUB_LABELMale: Black or African American: 15-24 years                                          19.029
+STUB_LABELMale: Black or African American: 25-44 years                                          24.317
+STUB_LABELMale: Black or African American: 45-64 years                                          15.972
+STUB_LABELMale: Black or African American: 65 years and over                                    17.004
+STUB_LABELMale: Black or African American: 65-74 years                                          15.719
+STUB_LABELMale: Black or African American: 75-84 years                                          19.294
+STUB_LABELMale: Hispanic or Latino: All races                                                   16.117
+STUB_LABELMale: Hispanic or Latino: All races: 15-24 years                                      17.573
+STUB_LABELMale: Hispanic or Latino: All races: 25-44 years                                      18.243
+STUB_LABELMale: Hispanic or Latino: All races: 45-64 years                                      17.590
+STUB_LABELMale: Hispanic or Latino: All races: 65 years and over                                25.335
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native                        39.606
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years           56.767
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years           54.567
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years           26.721
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 65 years and over     10.253
+STUB_LABELMale: Not Hispanic or Latino: Asian                                                    4.238
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander                               11.778
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years                  12.257
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years                  11.483
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years                  12.290
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over            15.932
+STUB_LABELMale: Not Hispanic or Latino: Asian: 15-24 years                                       4.886
+STUB_LABELMale: Not Hispanic or Latino: Asian: 25-44 years                                       3.152
+STUB_LABELMale: Not Hispanic or Latino: Asian: 45-64 years                                       3.777
+STUB_LABELMale: Not Hispanic or Latino: Asian: 65 years and over                                 4.262
+STUB_LABELMale: Not Hispanic or Latino: Black or African American                               13.660
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 15-24 years                  15.380
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 25-44 years                  18.712
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 45-64 years                  11.178
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 65 years and over            11.103
+STUB_LABELMale: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander                9.134
+STUB_LABELMale: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 25-44 years  12.724
+STUB_LABELMale: Not Hispanic or Latino: White                                                   39.785
+STUB_LABELMale: Not Hispanic or Latino: White: 15-24 years                                      31.310
+STUB_LABELMale: Not Hispanic or Latino: White: 25-44 years                                      41.332
+STUB_LABELMale: Not Hispanic or Latino: White: 45-64 years                                      43.281
+STUB_LABELMale: Not Hispanic or Latino: White: 65 years and over                                55.362
+STUB_LABELMale: White                                                                           37.604
+STUB_LABELMale: White: 15-24 years                                                              29.628
+STUB_LABELMale: White: 25-44 years                                                              38.682
+STUB_LABELMale: White: 45-64 years                                                              43.790
+STUB_LABELMale: White: 65 years and over                                                        58.520
+STUB_LABELMale: White: 65-74 years                                                              47.461
+STUB_LABELMale: White: 75-84 years                                                              71.308
+STUB_LABELMale: White: 85 years and over                                                        92.301
+                                                                                               Pr(&gt;|t|)
+(Intercept)                                                                                    0.001357
+STUB_LABEL15-19 years                                                                           &lt; 2e-16
+STUB_LABEL15-24 years                                                                           &lt; 2e-16
+STUB_LABEL20-24 years                                                                           &lt; 2e-16
+STUB_LABEL25-34 years                                                                           &lt; 2e-16
+STUB_LABEL25-44 years                                                                           &lt; 2e-16
+STUB_LABEL35-44 years                                                                           &lt; 2e-16
+STUB_LABEL45-54 years                                                                           &lt; 2e-16
+STUB_LABEL45-64 years                                                                           &lt; 2e-16
+STUB_LABEL55-64 years                                                                           &lt; 2e-16
+STUB_LABEL65 years and over                                                                     &lt; 2e-16
+STUB_LABEL65-74 years                                                                           &lt; 2e-16
+STUB_LABEL75-84 years                                                                           &lt; 2e-16
+STUB_LABEL85 years and over                                                                     &lt; 2e-16
+STUB_LABELAll persons                                                                           &lt; 2e-16
+STUB_LABELFemale                                                                               1.34e-11
+STUB_LABELFemale: 10-14 years                                                                  0.363649
+STUB_LABELFemale: 15-19 years                                                                  0.001257
+STUB_LABELFemale: 15-24 years                                                                  6.10e-05
+STUB_LABELFemale: 20-24 years                                                                  1.82e-06
+STUB_LABELFemale: 25-34 years                                                                  9.69e-12
+STUB_LABELFemale: 25-44 years                                                                  2.46e-16
+STUB_LABELFemale: 35-44 years                                                                   &lt; 2e-16
+STUB_LABELFemale: 45-54 years                                                                   &lt; 2e-16
+STUB_LABELFemale: 45-64 years                                                                   &lt; 2e-16
+STUB_LABELFemale: 55-64 years                                                                   &lt; 2e-16
+STUB_LABELFemale: 65 years and over                                                            1.40e-10
+STUB_LABELFemale: 65-74 years                                                                  3.71e-12
+STUB_LABELFemale: 75-84 years                                                                  1.45e-09
+STUB_LABELFemale: 85 years and over                                                            5.25e-07
+STUB_LABELFemale: American Indian or Alaska Native                                             3.47e-09
+STUB_LABELFemale: American Indian or Alaska Native: 15-24 years                                 &lt; 2e-16
+STUB_LABELFemale: American Indian or Alaska Native: 25-44 years                                 &lt; 2e-16
+STUB_LABELFemale: American Indian or Alaska Native: 45-64 years                                4.48e-05
+STUB_LABELFemale: Asian or Pacific Islander                                                    2.35e-05
+STUB_LABELFemale: Asian or Pacific Islander: 15-24 years                                       4.97e-05
+STUB_LABELFemale: Asian or Pacific Islander: 25-44 years                                       0.000132
+STUB_LABELFemale: Asian or Pacific Islander: 45-64 years                                       2.72e-06
+STUB_LABELFemale: Asian or Pacific Islander: 65 years and over                                 3.07e-15
+STUB_LABELFemale: Black or African American                                                    0.158698
+STUB_LABELFemale: Black or African American: 15-24 years                                       0.090667
+STUB_LABELFemale: Black or African American: 25-44 years                                       0.004225
+STUB_LABELFemale: Black or African American: 45-64 years                                       0.044229
+STUB_LABELFemale: Black or African American: 65 years and over                                 0.681286
+STUB_LABELFemale: Hispanic or Latino: All races                                                0.263601
+STUB_LABELFemale: Hispanic or Latino: All races: 15-24 years                                   0.036846
+STUB_LABELFemale: Hispanic or Latino: All races: 25-44 years                                   0.053623
+STUB_LABELFemale: Hispanic or Latino: All races: 45-64 years                                   0.034166
+STUB_LABELFemale: Hispanic or Latino: All races: 65 years and over                             0.391753
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native                      &lt; 2e-16
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years         &lt; 2e-16
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years         &lt; 2e-16
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years        4.16e-11
+STUB_LABELFemale: Not Hispanic or Latino: Asian                                                0.227318
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander                            0.001285
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years               0.000391
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years               0.001427
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years               0.000234
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over         3.14e-07
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 15-24 years                                   0.056963
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 25-44 years                                   0.333242
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 45-64 years                                   0.239742
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 65 years and over                             0.447514
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American                            0.338547
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 15-24 years               0.115204
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 25-44 years               0.027362
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 45-64 years               0.206685
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 65 years and over         0.886044
+STUB_LABELFemale: Not Hispanic or Latino: White                                                 &lt; 2e-16
+STUB_LABELFemale: Not Hispanic or Latino: White: 15-24 years                                   3.05e-06
+STUB_LABELFemale: Not Hispanic or Latino: White: 25-44 years                                    &lt; 2e-16
+STUB_LABELFemale: Not Hispanic or Latino: White: 45-64 years                                    &lt; 2e-16
+STUB_LABELFemale: Not Hispanic or Latino: White: 65 years and over                             2.02e-10
+STUB_LABELFemale: White                                                                        4.07e-15
+STUB_LABELFemale: White: 15-24 years                                                           8.05e-06
+STUB_LABELFemale: White: 25-44 years                                                            &lt; 2e-16
+STUB_LABELFemale: White: 45-64 years                                                            &lt; 2e-16
+STUB_LABELFemale: White: 65 years and over                                                     1.98e-12
+STUB_LABELMale                                                                                  &lt; 2e-16
+STUB_LABELMale: 10-14 years                                                                    0.352244
+STUB_LABELMale: 15-19 years                                                                     &lt; 2e-16
+STUB_LABELMale: 15-24 years                                                                     &lt; 2e-16
+STUB_LABELMale: 20-24 years                                                                     &lt; 2e-16
+STUB_LABELMale: 25-34 years                                                                     &lt; 2e-16
+STUB_LABELMale: 25-44 years                                                                     &lt; 2e-16
+STUB_LABELMale: 35-44 years                                                                     &lt; 2e-16
+STUB_LABELMale: 45-54 years                                                                     &lt; 2e-16
+STUB_LABELMale: 45-64 years                                                                     &lt; 2e-16
+STUB_LABELMale: 55-64 years                                                                     &lt; 2e-16
+STUB_LABELMale: 65 years and over                                                               &lt; 2e-16
+STUB_LABELMale: 65-74 years                                                                     &lt; 2e-16
+STUB_LABELMale: 75-84 years                                                                     &lt; 2e-16
+STUB_LABELMale: 85 years and over                                                               &lt; 2e-16
+STUB_LABELMale: American Indian or Alaska Native                                                &lt; 2e-16
+STUB_LABELMale: American Indian or Alaska Native: 15-24 years                                   &lt; 2e-16
+STUB_LABELMale: American Indian or Alaska Native: 25-44 years                                   &lt; 2e-16
+STUB_LABELMale: American Indian or Alaska Native: 45-64 years                                   &lt; 2e-16
+STUB_LABELMale: American Indian or Alaska Native: 65 years and over                            5.60e-14
+STUB_LABELMale: Asian or Pacific Islander                                                       &lt; 2e-16
+STUB_LABELMale: Asian or Pacific Islander: 15-24 years                                          &lt; 2e-16
+STUB_LABELMale: Asian or Pacific Islander: 25-44 years                                          &lt; 2e-16
+STUB_LABELMale: Asian or Pacific Islander: 45-64 years                                          &lt; 2e-16
+STUB_LABELMale: Asian or Pacific Islander: 65 years and over                                    &lt; 2e-16
+STUB_LABELMale: Black or African American                                                       &lt; 2e-16
+STUB_LABELMale: Black or African American: 15-24 years                                          &lt; 2e-16
+STUB_LABELMale: Black or African American: 25-44 years                                          &lt; 2e-16
+STUB_LABELMale: Black or African American: 45-64 years                                          &lt; 2e-16
+STUB_LABELMale: Black or African American: 65 years and over                                    &lt; 2e-16
+STUB_LABELMale: Black or African American: 65-74 years                                          &lt; 2e-16
+STUB_LABELMale: Black or African American: 75-84 years                                          &lt; 2e-16
+STUB_LABELMale: Hispanic or Latino: All races                                                   &lt; 2e-16
+STUB_LABELMale: Hispanic or Latino: All races: 15-24 years                                      &lt; 2e-16
+STUB_LABELMale: Hispanic or Latino: All races: 25-44 years                                      &lt; 2e-16
+STUB_LABELMale: Hispanic or Latino: All races: 45-64 years                                      &lt; 2e-16
+STUB_LABELMale: Hispanic or Latino: All races: 65 years and over                                &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native                        &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years           &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years           &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years           &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 65 years and over     &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Asian                                                  2.30e-05
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander                               &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years                  &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years                  &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years                  &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over            &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Asian: 15-24 years                                     1.06e-06
+STUB_LABELMale: Not Hispanic or Latino: Asian: 25-44 years                                     0.001628
+STUB_LABELMale: Not Hispanic or Latino: Asian: 45-64 years                                     0.000161
+STUB_LABELMale: Not Hispanic or Latino: Asian: 65 years and over                               2.06e-05
+STUB_LABELMale: Not Hispanic or Latino: Black or African American                               &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 15-24 years                  &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 25-44 years                  &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 45-64 years                  &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 65 years and over            &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander               &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 25-44 years  &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: White                                                   &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: White: 15-24 years                                      &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: White: 25-44 years                                      &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: White: 45-64 years                                      &lt; 2e-16
+STUB_LABELMale: Not Hispanic or Latino: White: 65 years and over                                &lt; 2e-16
+STUB_LABELMale: White                                                                           &lt; 2e-16
+STUB_LABELMale: White: 15-24 years                                                              &lt; 2e-16
+STUB_LABELMale: White: 25-44 years                                                              &lt; 2e-16
+STUB_LABELMale: White: 45-64 years                                                              &lt; 2e-16
+STUB_LABELMale: White: 65 years and over                                                        &lt; 2e-16
+STUB_LABELMale: White: 65-74 years                                                              &lt; 2e-16
+STUB_LABELMale: White: 75-84 years                                                              &lt; 2e-16
+STUB_LABELMale: White: 85 years and over                                                        &lt; 2e-16
+                                                                                                  
+(Intercept)                                                                                    ** 
+STUB_LABEL15-19 years                                                                          ***
+STUB_LABEL15-24 years                                                                          ***
+STUB_LABEL20-24 years                                                                          ***
+STUB_LABEL25-34 years                                                                          ***
+STUB_LABEL25-44 years                                                                          ***
+STUB_LABEL35-44 years                                                                          ***
+STUB_LABEL45-54 years                                                                          ***
+STUB_LABEL45-64 years                                                                          ***
+STUB_LABEL55-64 years                                                                          ***
+STUB_LABEL65 years and over                                                                    ***
+STUB_LABEL65-74 years                                                                          ***
+STUB_LABEL75-84 years                                                                          ***
+STUB_LABEL85 years and over                                                                    ***
+STUB_LABELAll persons                                                                          ***
+STUB_LABELFemale                                                                               ***
+STUB_LABELFemale: 10-14 years                                                                     
+STUB_LABELFemale: 15-19 years                                                                  ** 
+STUB_LABELFemale: 15-24 years                                                                  ***
+STUB_LABELFemale: 20-24 years                                                                  ***
+STUB_LABELFemale: 25-34 years                                                                  ***
+STUB_LABELFemale: 25-44 years                                                                  ***
+STUB_LABELFemale: 35-44 years                                                                  ***
+STUB_LABELFemale: 45-54 years                                                                  ***
+STUB_LABELFemale: 45-64 years                                                                  ***
+STUB_LABELFemale: 55-64 years                                                                  ***
+STUB_LABELFemale: 65 years and over                                                            ***
+STUB_LABELFemale: 65-74 years                                                                  ***
+STUB_LABELFemale: 75-84 years                                                                  ***
+STUB_LABELFemale: 85 years and over                                                            ***
+STUB_LABELFemale: American Indian or Alaska Native                                             ***
+STUB_LABELFemale: American Indian or Alaska Native: 15-24 years                                ***
+STUB_LABELFemale: American Indian or Alaska Native: 25-44 years                                ***
+STUB_LABELFemale: American Indian or Alaska Native: 45-64 years                                ***
+STUB_LABELFemale: Asian or Pacific Islander                                                    ***
+STUB_LABELFemale: Asian or Pacific Islander: 15-24 years                                       ***
+STUB_LABELFemale: Asian or Pacific Islander: 25-44 years                                       ***
+STUB_LABELFemale: Asian or Pacific Islander: 45-64 years                                       ***
+STUB_LABELFemale: Asian or Pacific Islander: 65 years and over                                 ***
+STUB_LABELFemale: Black or African American                                                       
+STUB_LABELFemale: Black or African American: 15-24 years                                       .  
+STUB_LABELFemale: Black or African American: 25-44 years                                       ** 
+STUB_LABELFemale: Black or African American: 45-64 years                                       *  
+STUB_LABELFemale: Black or African American: 65 years and over                                    
+STUB_LABELFemale: Hispanic or Latino: All races                                                   
+STUB_LABELFemale: Hispanic or Latino: All races: 15-24 years                                   *  
+STUB_LABELFemale: Hispanic or Latino: All races: 25-44 years                                   .  
+STUB_LABELFemale: Hispanic or Latino: All races: 45-64 years                                   *  
+STUB_LABELFemale: Hispanic or Latino: All races: 65 years and over                                
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native                     ***
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years        ***
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years        ***
+STUB_LABELFemale: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years        ***
+STUB_LABELFemale: Not Hispanic or Latino: Asian                                                   
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander                            ** 
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years               ***
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years               ** 
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years               ***
+STUB_LABELFemale: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over         ***
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 15-24 years                                   .  
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 25-44 years                                      
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 45-64 years                                      
+STUB_LABELFemale: Not Hispanic or Latino: Asian: 65 years and over                                
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American                               
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 15-24 years                  
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 25-44 years               *  
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 45-64 years                  
+STUB_LABELFemale: Not Hispanic or Latino: Black or African American: 65 years and over            
+STUB_LABELFemale: Not Hispanic or Latino: White                                                ***
+STUB_LABELFemale: Not Hispanic or Latino: White: 15-24 years                                   ***
+STUB_LABELFemale: Not Hispanic or Latino: White: 25-44 years                                   ***
+STUB_LABELFemale: Not Hispanic or Latino: White: 45-64 years                                   ***
+STUB_LABELFemale: Not Hispanic or Latino: White: 65 years and over                             ***
+STUB_LABELFemale: White                                                                        ***
+STUB_LABELFemale: White: 15-24 years                                                           ***
+STUB_LABELFemale: White: 25-44 years                                                           ***
+STUB_LABELFemale: White: 45-64 years                                                           ***
+STUB_LABELFemale: White: 65 years and over                                                     ***
+STUB_LABELMale                                                                                 ***
+STUB_LABELMale: 10-14 years                                                                       
+STUB_LABELMale: 15-19 years                                                                    ***
+STUB_LABELMale: 15-24 years                                                                    ***
+STUB_LABELMale: 20-24 years                                                                    ***
+STUB_LABELMale: 25-34 years                                                                    ***
+STUB_LABELMale: 25-44 years                                                                    ***
+STUB_LABELMale: 35-44 years                                                                    ***
+STUB_LABELMale: 45-54 years                                                                    ***
+STUB_LABELMale: 45-64 years                                                                    ***
+STUB_LABELMale: 55-64 years                                                                    ***
+STUB_LABELMale: 65 years and over                                                              ***
+STUB_LABELMale: 65-74 years                                                                    ***
+STUB_LABELMale: 75-84 years                                                                    ***
+STUB_LABELMale: 85 years and over                                                              ***
+STUB_LABELMale: American Indian or Alaska Native                                               ***
+STUB_LABELMale: American Indian or Alaska Native: 15-24 years                                  ***
+STUB_LABELMale: American Indian or Alaska Native: 25-44 years                                  ***
+STUB_LABELMale: American Indian or Alaska Native: 45-64 years                                  ***
+STUB_LABELMale: American Indian or Alaska Native: 65 years and over                            ***
+STUB_LABELMale: Asian or Pacific Islander                                                      ***
+STUB_LABELMale: Asian or Pacific Islander: 15-24 years                                         ***
+STUB_LABELMale: Asian or Pacific Islander: 25-44 years                                         ***
+STUB_LABELMale: Asian or Pacific Islander: 45-64 years                                         ***
+STUB_LABELMale: Asian or Pacific Islander: 65 years and over                                   ***
+STUB_LABELMale: Black or African American                                                      ***
+STUB_LABELMale: Black or African American: 15-24 years                                         ***
+STUB_LABELMale: Black or African American: 25-44 years                                         ***
+STUB_LABELMale: Black or African American: 45-64 years                                         ***
+STUB_LABELMale: Black or African American: 65 years and over                                   ***
+STUB_LABELMale: Black or African American: 65-74 years                                         ***
+STUB_LABELMale: Black or African American: 75-84 years                                         ***
+STUB_LABELMale: Hispanic or Latino: All races                                                  ***
+STUB_LABELMale: Hispanic or Latino: All races: 15-24 years                                     ***
+STUB_LABELMale: Hispanic or Latino: All races: 25-44 years                                     ***
+STUB_LABELMale: Hispanic or Latino: All races: 45-64 years                                     ***
+STUB_LABELMale: Hispanic or Latino: All races: 65 years and over                               ***
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native                       ***
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 15-24 years          ***
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 25-44 years          ***
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 45-64 years          ***
+STUB_LABELMale: Not Hispanic or Latino: American Indian or Alaska Native: 65 years and over    ***
+STUB_LABELMale: Not Hispanic or Latino: Asian                                                  ***
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander                              ***
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 15-24 years                 ***
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 25-44 years                 ***
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 45-64 years                 ***
+STUB_LABELMale: Not Hispanic or Latino: Asian or Pacific Islander: 65 years and over           ***
+STUB_LABELMale: Not Hispanic or Latino: Asian: 15-24 years                                     ***
+STUB_LABELMale: Not Hispanic or Latino: Asian: 25-44 years                                     ** 
+STUB_LABELMale: Not Hispanic or Latino: Asian: 45-64 years                                     ***
+STUB_LABELMale: Not Hispanic or Latino: Asian: 65 years and over                               ***
+STUB_LABELMale: Not Hispanic or Latino: Black or African American                              ***
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 15-24 years                 ***
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 25-44 years                 ***
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 45-64 years                 ***
+STUB_LABELMale: Not Hispanic or Latino: Black or African American: 65 years and over           ***
+STUB_LABELMale: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander              ***
+STUB_LABELMale: Not Hispanic or Latino: Native Hawaiian or Other Pacific Islander: 25-44 years ***
+STUB_LABELMale: Not Hispanic or Latino: White                                                  ***
+STUB_LABELMale: Not Hispanic or Latino: White: 15-24 years                                     ***
+STUB_LABELMale: Not Hispanic or Latino: White: 25-44 years                                     ***
+STUB_LABELMale: Not Hispanic or Latino: White: 45-64 years                                     ***
+STUB_LABELMale: Not Hispanic or Latino: White: 65 years and over                               ***
+STUB_LABELMale: White                                                                          ***
+STUB_LABELMale: White: 15-24 years                                                             ***
+STUB_LABELMale: White: 25-44 years                                                             ***
+STUB_LABELMale: White: 45-64 years                                                             ***
+STUB_LABELMale: White: 65 years and over                                                       ***
+STUB_LABELMale: White: 65-74 years                                                             ***
+STUB_LABELMale: White: 75-84 years                                                             ***
+STUB_LABELMale: White: 85 years and over                                                       ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.85 on 5334 degrees of freedom
+  (906 observations deleted due to missingness)
+Multiple R-squared:  0.9406,    Adjusted R-squared:  0.9389 
+F-statistic: 566.7 on 149 and 5334 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colnames</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "INDICATOR"      "UNIT"           "UNIT_NUM"       "STUB_NAME"     
+ [5] "STUB_NAME_NUM"  "STUB_LABEL"     "STUB_LABEL_NUM" "YEAR"          
+ [9] "YEAR_NUM"       "AGE"            "AGE_NUM"        "ESTIMATE"      
+[13] "FLAG"          </code></pre>
+</div>
+</div>
+<p>##Questions</p>
+<ol type="1">
+<li>Has the suicide estimate changed over time?</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">library</span>(ggplot2)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)  </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># First: create male_female_data</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>male_female_data <span class="ot">&lt;-</span> Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States <span class="sc">%&gt;%</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(STUB_LABEL <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Male"</span>, <span class="st">"Female"</span>))</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>lm_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(ESTIMATE <span class="sc">~</span> YEAR, <span class="at">data =</span> male_female_data)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = ESTIMATE ~ YEAR, data = male_female_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.4045 -7.4346 -0.1926  7.5137 10.8608 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) -2.560557  76.791752  -0.033    0.973
+YEAR         0.007483   0.038468   0.195    0.846
+
+Residual standard error: 7.45 on 166 degrees of freedom
+Multiple R-squared:  0.0002279, Adjusted R-squared:  -0.005795 
+F-statistic: 0.03784 on 1 and 166 DF,  p-value: 0.846</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(male_female_data, <span class="fu">aes</span>(<span class="at">x =</span> YEAR, <span class="at">y =</span> ESTIMATE)) <span class="sc">+</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Trend in Suicide Estimates Over Time"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Estimate"</span>) <span class="sc">+</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Death-Rates_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Interpretation:</p>
+<p>Linear regression assesses whether suicide estimates are increasing or decreasing over time. The slope coefficient of YEAR tells us the direction of the trend, and the p-value indicates if the trend is significant.</p>
+<p>Result :</p>
+<p>As the years increase, the estimated number of suicides slightly decreases on average. However, the data points are very spread out, meaning that year is not a strong predictor of suicide estimates by itself. The relationship is weak, even though it trends downward.</p>
+<ol start="2" type="1">
+<li>How do suicide rate estimates differ across young adult age groups?</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States<span class="sc">$</span>AGE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "All ages"          "10-14 years"       "15-24 years"      
+ [4] "15-19 years"       "20-24 years"       "25-44 years"      
+ [7] "25-34 years"       "35-44 years"       "45-64 years"      
+[10] "45-54 years"       "55-64 years"       "65 years and over"
+[13] "65-74 years"       "75-84 years"       "85 years and over"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>age_data <span class="ot">&lt;-</span> Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>age_data <span class="ot">&lt;-</span> <span class="fu">filter</span>(</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>  Death_rates_for_suicide_by_sex_race_Hispanic_origin_and_age_United_States,</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>  AGE <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"15-24 years"</span>, <span class="st">"25-34 years"</span>, <span class="st">"35-44 years"</span>)</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(age_data<span class="sc">$</span>AGE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+15-24 years 25-34 years 35-44 years 
+        812         126         126 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>age_data<span class="sc">$</span>AGE <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(age_data<span class="sc">$</span>AGE)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>anova_age <span class="ot">&lt;-</span> <span class="fu">aov</span>(ESTIMATE <span class="sc">~</span> AGE, <span class="at">data =</span> age_data)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(anova_age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+AGE           2   1485   742.7    8.31 0.000265 ***
+Residuals   923  82490    89.4                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+138 observations deleted due to missingness</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(age_data, <span class="fu">aes</span>(<span class="at">x =</span> AGE, <span class="at">y =</span> ESTIMATE, <span class="at">fill =</span> AGE)) <span class="sc">+</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Suicide Estimates by Age Group"</span>, <span class="at">x =</span> <span class="st">"Age Group"</span>, <span class="at">y =</span> <span class="st">"Estimate"</span>) <span class="sc">+</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 138 rows containing non-finite outside the scale range
+(`stat_boxplot()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Death-Rates_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Interpretation:</p>
+<p>The ANOVA tested whether there were significant differences in average suicide rate estimates among three young adult age groups: 15–24, 25–34, and 35–44 years. The resulting p-value from the ANOVA summary indicates [whether or not] these differences are statistically significant.</p>
+<p>Result:</p>
+<p>Based on the box plot, age group 35-44 years tends to have higher estimates than 15–24, 25–34 year age group.</p>
+<p>Conclusion:</p>
+<p>To begin my analysis, I first created a histogram to examine the distribution of suicide estimates. The histogram revealed that the data was right-skewed, indicating that while most suicide estimates were relatively low, some groups had significantly higher estimates. Next, I generated boxplots to compare the spread of suicide estimates across different demographic groups. The boxplots showed clear differences among age and racial/ethnic groups, with older males—especially those aged 85 years and over—having higher suicide estimates than younger groups. This visualization helped identify which groups were at the highest risk.</p>
+<p>After visualizing the data, I calculated the mean, median, mode, standard deviation, minimum, and maximum to summarize the central tendency and variability of suicide estimates. The mean was noticeably higher than the median, further confirming the right-skewed distribution observed in the histogram. To statistically test whether there were significant differences in suicide estimates across demographic groups, I conducted an ANOVA (Analysis of Variance). The ANOVA results showed a statistically significant difference, meaning that suicide estimates varied meaningfully between groups. This finding, combined with the visualizations, suggests that age, gender, and race/ethnicity impact suicide estimates, emphasizing the need for targeted mental health interventions for high-risk populations.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
+<script>window.backupDefine = window.define; window.define = undefined;</script>
+<script type="text/javascript" src="quarto-preview.js"></script>
+<script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+<script type="text/javascript">
+  const options = {
+    origin: "",
+    search: "",
+    inputFile: "/cloud/project/Death Rates.qmd",
+    isPresentation: false
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    window.QuartoPreview.init(options);
+  });
+</script>
